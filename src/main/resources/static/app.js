@@ -13,13 +13,14 @@ function setConnected(connected) {
 }
 
 function connect() {
-    var socket = new SockJS('/gs-guide-websocket');
+    var socket = new SockJS('/gs-guide-websocket'); // 소켓명
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/greetings', function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+            console.log("return Message=%o" + greeting)
+            showGreeting(JSON.parse(greeting.body).message);
         });
     });
 }
@@ -33,7 +34,8 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+    // app/hello 와 연동
+    stompClient.send("/app/hello", {}, JSON.stringify({'message': $("#name").val()}));
 }
 
 function showGreeting(message) {

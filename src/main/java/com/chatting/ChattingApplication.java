@@ -1,12 +1,11 @@
-package com.example.chatting.messagingstompwebsocket;
+package com.chatting;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MessagingStompWebsocketApplication {
-
+public class ChattingApplication {
     public static void main(String[] args) {
-        SpringApplication.run(MessagingStompWebsocketApplication.class, args);
+        SpringApplication.run(ChattingApplication.class, args);
     }
 }
