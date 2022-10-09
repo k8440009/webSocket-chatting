@@ -35,6 +35,6 @@ out/
 
 ### static ###
 !**/src/main/resources/
-
+!**/src/main/resources
 ### VS Code ###
 .vscode/
