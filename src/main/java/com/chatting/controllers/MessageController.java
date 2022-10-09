@@ -16,13 +16,14 @@ public class MessageController {
      * @return
      * @throws Exception
      */
-    @MessageMapping(MessageConst.sendMapping)
-    @SendTo(MessageConst.destination)
+    @MessageMapping(MessageConst.destination) // 요청
+    @SendTo(MessageConst.destination) // 응답
     public Message sendMessage(Message message) throws Exception {
         // Json message key와 Message 객체가 연동
 //        System.out.println("connect");
 //        System.out.println(message.getMessage());
-        Thread.sleep(1000); // simulated delay
-        return new Message("Hello, " + HtmlUtils.htmlEscape(message.getMessage()) + "!");
+        Thread.sleep(100); // simulated delay
+        return new Message("Hello!");
+        //return new Message("Hello, " + HtmlUtils.htmlEscape(message.getMessage()) + "!");
     }
 }

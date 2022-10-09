@@ -24,6 +24,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        // 클라이언트가 접속할 웹소켓 주소
+        //registry.addEndpoint("/test").setAllowedOrigins("*").withSockJS();
         registry.addEndpoint(WebSocketConst.endPointPaths).withSockJS();
     }
     /**
