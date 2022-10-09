@@ -1,28 +1,41 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import SockJs from "sockjs-client";
 import StompJs from "stompjs";
 import axios from 'axios';
+import * as buffer from "buffer";
 
-
-function connect() {
-    const socket = new SockJs('/chattingRoom');
-    const stompClient = StompJs.over(socket);
-
-    stompClient.connect({}, () => {
-        stompClient.subscribe('/topic/greetings', (data) => {
-            console.log("success subscribe");
-        });
-    });
-}
 
 function Chatting() {
     const [message, setMessage] = useState('');
+    const [buttonState, setButtonState] = useState(false);
 
     useEffect(() => {
     axios.get('/')
         .then(response => setMessage(response.data))
         .catch(error => console.log(error))
     }, []);
+
+    function connect() {
+        const socket = new SockJs('/chattingRoom');
+        const stompClient = StompJs.over(socket);
+
+        // console.log("data=%o", buttonState);
+
+        // connectRef.current.disable = true;
+        // console.log("connectRef=%o", connectRef)
+        // disconnectRef.current.disable = false;
+        // console.log("disconnectRef=%o", disconnectRef)
+
+        setButtonState(true);
+        // console.log("data=%o", buttonState);
+
+        stompClient.connect({}, () => {
+            stompClient.subscribe('/room/1', (data) => {
+                console.log("success subscribe");
+            });
+        });
+
+    }
 
     return (
         <div id="main-content">
@@ -32,8 +45,8 @@ function Chatting() {
                     <form className="form-inline">
                         <div className="form-group">
                             <label htmlFor="connect">WebSocket connection:</label>
-                            <button id="connect" type="button"onClick={connect}>Connect</button>
-                            <button id="disconnect" type="button" disabled="disabled">Disconnect</button>
+                            <button id="connect" type="button" disabled={buttonState} onClick={connect}>Connect</button>
+                            <button id="disconnect" type="button" disabled={!buttonState}>Disconnect</button>
                         </div>
                     </form>
                 </div>
