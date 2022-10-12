@@ -8,6 +8,8 @@ import * as buffer from "buffer";
 function Chatting() {
     const [message, setMessage] = useState('');
     const [buttonState, setButtonState] = useState(false);
+    let stompClient;
+
 
     useEffect(() => {
     axios.get('/')
@@ -15,9 +17,14 @@ function Chatting() {
         .catch(error => console.log(error))
     }, []);
 
+    function sendMessage() {
+        // app/hello 와 연동
+        this.stompClient.send("/room/1", {}, JSON.stringify({'message': 'hello'}));
+    }
+
     function connect() {
-        const socket = new SockJs('/chattingRoom');
-        const stompClient = StompJs.over(socket);
+        const socket = new SockJs('/chattingRoom')
+        stompClient = StompJs.over(socket);
 
         // console.log("data=%o", buttonState);
 
@@ -30,12 +37,13 @@ function Chatting() {
         // console.log("data=%o", buttonState);
 
         stompClient.connect({}, () => {
-            stompClient.subscribe('/room/1', (data) => {
+            stompClient.subscribe('/room/1', (message) => {
                 console.log("success subscribe");
+                //  showGreeting(JSON.parse(greeting.body).message);
             });
         });
-
     }
+
 
     return (
         <div id="main-content">
@@ -71,8 +79,8 @@ function Chatting() {
                     <form className="form-inline">
                         <div className="form-group">
                             <input type="text" id="name" className="form-control" placeholder="Your name here..."></input>
+                            <button id="send" className="btn btn-default" type="button" onClick={sendMessage}>Send</button>
                         </div>
-                        <button id="send" className="btn btn-default" type="submit">Send</button>
                     </form>
                 </div>
             </div>
