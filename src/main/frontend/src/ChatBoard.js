@@ -38,7 +38,7 @@ class ChatBoard extends React.Component {
 }
 
 function ConnectBtn(props) {
-    console.log("ConnectBtn=%o", props)
+    // console.log("ConnectBtn=%o", props)
 
     return (
         <button
@@ -52,7 +52,7 @@ function ConnectBtn(props) {
 }
 
 function DisconnectBtn(props) {
-    console.log("DisconnectBtn=%o", props)
+    // console.log("DisconnectBtn=%o", props)
 
     return (
         <button

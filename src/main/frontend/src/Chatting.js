@@ -10,32 +10,60 @@ class Chatting extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isConnect : false
+            isConnect : false,
+            stompClient : null
         }
     }
     // connect 버튼 클릭
     handleConnectClick() {
-        console.log("handleConnectClick1")
         const isConnect = this.state.isConnect;
         if (isConnect) {
             return ;
         }
-        console.log("handleConnectClick2")
+        const socket = new SockJs('/chattingRoom');
+        const stompClient = StompJs.over(socket);
+
+        stompClient.connect({}, () => {
+            stompClient.subscribe('/room/1', (message) => {
+
+            });
+        });
+
         this.setState({
-            isConnect : true
+            isConnect : true,
+            stompClient : stompClient
         })
+
+        console.log("state=%o", this.state)
+        // stompClient.connect({}, function (frame) {
+        //     stompClient.subscribe('/', function (greeting) {
+        //         console.log("return Message=%o" + greeting)
+        //         showGreeting(JSON.parse(greeting.body).message);
+        //     });
+        // });
+
+        // stompClient.connect => {
+        //
+        // };
+
+        // this.setState({
+        //     isConnect : true
+        // })
     }
     // disConnect 버튼 클릭
     handleDisconnectClick() {
-        console.log("handleDisconnectClick")
+        console.log("state=%o", this.state)
         const isConnect = this.state.isConnect;
 
         if (!isConnect) {
             return ;
         }
 
+        const stompClient = this.state.stompClient;
+        stompClient.disconnect();
         this.setState({
-            isConnect : false
+            isConnect : false,
+            stompClient : null
         })
     }
 
