@@ -1,6 +1,5 @@
-import React, {useState} from "react";
+import React  from "react";
 import Chatting from "./Chatting";
-import axios from 'axios';
 
 function App() {
     return (
