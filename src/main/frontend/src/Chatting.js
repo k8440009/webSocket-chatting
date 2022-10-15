@@ -14,18 +14,30 @@ class Chatting extends React.Component {
             stompClient : null
         }
     }
+    handleSendClick() {
+        console.log("=handleSendClick=");
+        // stompClient.send("/app/hello", {}, JSON.stringify({'message': $("#name").val()}));
+        const stompClient = this.state.stompClient;
+        const name = JSON.stringify({
+            'name' : 'hello'
+        })
+
+        console.log("stompClient=%o", stompClient);
+        stompClient.send("/app/hello", name);
+    }
     // connect 버튼 클릭
     handleConnectClick() {
         const isConnect = this.state.isConnect;
         if (isConnect) {
             return ;
         }
-        const socket = new SockJs('/chattingRoom');
+        // const socket = new SockJs('/chattingRoom');
+        const socket = new SockJs('/gs-guide-websocket');
         const stompClient = StompJs.over(socket);
 
         stompClient.connect({}, () => {
-            stompClient.subscribe('/room/1', (message) => {
-
+            stompClient.subscribe('/topic/greetings', (message) => {
+                console.log("subscribe_message=%o", message)
             });
         });
 
@@ -35,20 +47,6 @@ class Chatting extends React.Component {
         })
 
         console.log("state=%o", this.state)
-        // stompClient.connect({}, function (frame) {
-        //     stompClient.subscribe('/', function (greeting) {
-        //         console.log("return Message=%o" + greeting)
-        //         showGreeting(JSON.parse(greeting.body).message);
-        //     });
-        // });
-
-        // stompClient.connect => {
-        //
-        // };
-
-        // this.setState({
-        //     isConnect : true
-        // })
     }
     // disConnect 버튼 클릭
     handleDisconnectClick() {
@@ -74,6 +72,7 @@ class Chatting extends React.Component {
                     isConnect={this.state.isConnect}
                     onConnectClick={() =>this.handleConnectClick()}
                     onDisconnectClick={() =>this.handleDisconnectClick()}
+                    onSendMessageClick={() => this.handleSendClick()}
                 />
             </div>
         );

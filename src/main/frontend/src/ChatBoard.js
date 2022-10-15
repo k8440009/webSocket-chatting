@@ -19,6 +19,14 @@ class ChatBoard extends React.Component {
         );
     }
 
+    renderSendBtn() {
+        return (
+            <SendMessageBtn
+                onClick={() => this.props.onSendMessageClick()}
+            />
+        );
+    }
+
     render() {
         return(
             <div>
@@ -30,7 +38,7 @@ class ChatBoard extends React.Component {
 
                 <div className="message_row">
                     <input type="text"/>
-                    <button id="send">Send</button>
+                    {this.renderSendBtn()}
                 </div>
             </div>
         );
@@ -65,4 +73,14 @@ function DisconnectBtn(props) {
     )
 }
 
+function SendMessageBtn(props) {
+    return (
+        <button
+            className="btn_send"
+            onClick={props.onClick}
+        >
+            Send
+        </button>
+    );
+}
 export default ChatBoard;
